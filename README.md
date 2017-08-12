@@ -95,8 +95,8 @@ $ sls spa deploy
 
 ## Note
 
-* The variable `__dirname` have reference to the plugin folder, because webpack
-is started programmatically, so replace `__dirname` to `process.cwd()`
+* The variable `__dirname` have reference to the plugin folder, because [webpack][link-webpack] and [webpack-dev-server][link-webpack-dev-server]
+are started programmatically, so replace `__dirname` to `process.cwd()`
 
 
 [ico-serverless]: http://public.serverless.com/badges/v3.svg
