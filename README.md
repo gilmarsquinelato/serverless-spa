@@ -41,7 +41,6 @@ to be used independent of stage, or be one bucket for each stage.
 ```yaml
 custom:
   spa:
-    webpackFileName: "webpack.spa.config.js"
     appFolder: "www"
     bucket: "serverless-site-s3"
 ```
@@ -51,7 +50,6 @@ or
 ```yaml
 custom:
   spa:
-    webpackFileName: "webpack.spa.config.js"
     appFolder: "www"
     buckets:
       dev: "dev-serverless-site-s3"
@@ -85,7 +83,8 @@ or with [serverless-offline][link-serverless-offline]
 $ sls offline
 ```
 
-This plugin detects if `devServer.hot` is `true`, and puts the entry points necessary to Hot Module Replacement works, even the [react-hot-loader][link-react-hot-loader] are inserted in each entry point, and detects if webpack config contains the necessary plugins added (HotModuleReplacementPlugin, NamedModulesPlugin, NoEmitOnErrorsPlugin), so you don't need to put configuration related to HMR.
+### Hot module replacement
+This plugin detects if `devServer.hot` is `true`, and puts the entry points necessary to Hot Module Replacement works, even the [react-hot-loader][link-react-hot-loader] is inserted in each entry point, and detects if webpack config contains the necessary plugins added (HotModuleReplacementPlugin, NamedModulesPlugin, NoEmitOnErrorsPlugin), so you don't need to put configuration related to HMR.
 
 ## Deploy
 
