@@ -88,7 +88,7 @@ This plugin detects if `devServer.hot` is `true`, and puts the entry points nece
 
 ## Deploy
 
-This will create a S3 bucket if not exists, update its configuration to work with SPA (index.html for errors)
+This will, bundle your website, create a S3 bucket if not exists, update its configuration to work with SPA (index.html for errors) and upload `.spa` folder to bucket.
 ```bash
 $ sls spa deploy
 ```
