@@ -1,7 +1,7 @@
 {
   "name": "serverless-spa",
   "version": "1.0.0",
-  "description": "",
+  "description": "Serverless plugin to bundle website with webpack and deploy to S3",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,9 +10,20 @@
     "type": "git",
     "url": "git+https://github.com/gilmarsquinelato/serverless-spa.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords":  [
+    "serverless",
+    "1.0",
+    "webpack",
+    "babel",
+    "typescript",
+    "es6",
+    "plugin",
+    "runtime",
+    "spa",
+    "offline"
+  ],
+  "author": "Gilmar Quinelato <gilmarsquinelato@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/gilmarsquinelato/serverless-spa/issues"
   },

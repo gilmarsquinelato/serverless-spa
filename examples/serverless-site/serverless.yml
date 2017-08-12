@@ -1,0 +1,36 @@
+service: serverless-site
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+plugins:
+  - serverless-webpack
+  - serverless-spa
+  - serverless-offline
+
+custom:
+  webpackIncludeModules: true
+  spa:
+    webpackFileName: "webpack.spa.config.js"
+    appFolder: "www"
+    buckets:
+      dev: "dev-serverless-site-s3"
+
+package:
+  individually: true
+
+functions:
+  hello:
+    handler: hello/index.handler
+    events:
+      - http:
+          path: hello
+          method: get
+
+  another:
+    handler: another/index.handler
+    events:
+      - http:
+          path: another
+          method: get
