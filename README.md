@@ -32,7 +32,17 @@ Alternatively, you can specify a different file in `serverless.yml`:
 ```yaml
 custom:
   spa:
-    webpackFileName: "webpack.spa.config.js"
+    webpack: "webpack.spa.config.js"
+```
+
+or
+
+```yaml
+custom:
+  spa:
+    webpack:
+      dev: "webpack.spa.dev.config.js"
+      prod: "webpack.spa.prod.config.js"
 ```
 
 The `appFolder` and `bucket` name must be defined. Bucket name can be defined in one parameter,
@@ -51,7 +61,7 @@ or
 custom:
   spa:
     appFolder: "www"
-    buckets:
+    bucket:
       dev: "dev-serverless-site-s3"
       prod: "prod-serverless-site-s3"
 ```

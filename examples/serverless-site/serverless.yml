@@ -12,7 +12,7 @@ plugins:
 custom:
   webpackIncludeModules: true
   spa:
-    webpackFileName: "webpack.spa.config.js"
+    webpack: "webpack.spa.config.js"
     appFolder: "www"
     buckets:
       dev: "dev-serverless-site-s3"
