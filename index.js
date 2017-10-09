@@ -431,6 +431,7 @@ class SPA {
   }
 
   _setWebpackConfigPath() {
+    const Utils = this.serverless.utils;
     this.webpackConfigPath = path.join(process.cwd(), this.webpackFilename);
 
     if (!Utils.fileExistsSync(this.webpackConfigPath)) {
@@ -450,6 +451,7 @@ class SPA {
   }
 
   _setAppFolder() {
+    const Utils = this.serverless.utils;
     this.appFolder = _.get(this.serverless, 'service.custom.spa.appFolder');
 
     if (!Utils.dirExistsSync(this.appFolder)) {

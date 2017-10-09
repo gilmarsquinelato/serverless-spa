@@ -1021,7 +1021,7 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.0.6, bluebird@^3.4.0, bluebird@^3.4.1, bluebird@^3.4.7, bluebird@^3.5.0:
+bluebird@^3.4.0, bluebird@^3.4.1, bluebird@^3.4.7, bluebird@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
@@ -3718,7 +3718,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.6.1, lodash@~4.17.4:
+lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.6.1, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -3881,7 +3881,7 @@ mime@1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.4.tgz#115f9e3b6b3daf2959983cb38f149a2d40eb5d53"
 
-mime@^1.2.11, mime@^1.3.4, mime@^1.3.6:
+mime@^1.3.4, mime@^1.3.6:
   version "1.3.6"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.6.tgz#591d84d3653a6b0b4a3b9df8de5aa8108e72e5e0"
 
@@ -5266,15 +5266,6 @@ serve-static@1.12.4:
     parseurl "~1.3.1"
     send "0.15.4"
 
-serverless-client-s3@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/serverless-client-s3/-/serverless-client-s3-2.0.0.tgz#2653df243bce2b9d565b9474b44372e70f3e69bf"
-  dependencies:
-    async "^1.5.2"
-    bluebird "^3.0.6"
-    lodash "^4.2.1"
-    mime "^1.2.11"
-
 serverless-offline@^3.15.3:
   version "3.15.3"
   resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-3.15.3.tgz#3ce94632ab557e036c0068fa1cd3972413d6d735"
@@ -5290,9 +5281,9 @@ serverless-offline@^3.15.3:
     lodash "^4.17.4"
     velocityjs "^0.9.3"
 
-serverless-spa@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/serverless-spa/-/serverless-spa-1.0.0.tgz#1e185f3952b26b7324c9d8a24c0cc69687eebd4f"
+serverless-spa@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/serverless-spa/-/serverless-spa-1.0.1.tgz#6dbdca59ab7110db5b28a79709890260f99da5c0"
   dependencies:
     async "^2.5.0"
     bluebird "^3.5.0"
