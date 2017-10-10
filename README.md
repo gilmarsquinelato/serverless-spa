@@ -66,6 +66,14 @@ custom:
       prod: "prod-serverless-site-s3"
 ```
 
+### GZip
+
+```yaml
+custom:
+  spa:
+    gzip: true
+```
+
 ## Bundling
 
 This will create a `.spa` folder with generated webpack bundle.

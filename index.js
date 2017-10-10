@@ -1,10 +1,11 @@
 'use strict';
 const path = require('path');
+const zlib = require('zlib');
 const fse = require('fs-extra');
 const BbPromise = require('bluebird');
 const _ = require('lodash');
 const async = require('async');
-const mime = require('mime');
+const mime = require('mime-types');
 const fs = require('fs');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -129,6 +130,8 @@ class SPA {
     if (error) {
       return error;
     }
+
+    this._setGZip();
   }
 
   cleanup() {
@@ -277,6 +280,7 @@ class SPA {
       .then(this._configurePolicyForBucket)
       .then(this._uploadDirectory);
   }
+
   _listBuckets(data) {
     data.Buckets.forEach((bucket) => {
       if (bucket.Name === this.bucketName) {
@@ -327,7 +331,7 @@ class SPA {
       Bucket: this.bucketName
     };
 
-    return this.aws.request('S3', 'createBucket', params, this.stage, this.region)
+    return this.aws.request('S3', 'createBucket', params, this.stage, this.region);
   }
 
   _configureBucket() {
@@ -390,20 +394,46 @@ class SPA {
   _uploadFile(filePath) {
     let fileKey = filePath.replace(this.distFolder, '').substr(1).replace(/\\/g, '/');
 
-    this.serverless.cli.log(`Uploading file ${fileKey} to bucket ${this.bucketName}...`);
+    this._gzipFile(filePath, fileKey, () => {
+      this.serverless.cli.log(`Uploading file '${fileKey}'...`);
 
-    fs.readFile(filePath, (err, fileBuffer) => {
-      let params = {
-        Bucket: this.bucketName,
-        Key: fileKey,
-        Body: fileBuffer,
-        ContentType: mime.lookup(filePath)
-      };
+      fs.readFile(filePath, (err, fileBuffer) => {
+        let params = {
+          Bucket: this.bucketName,
+          Key: fileKey,
+          Body: fileBuffer,
+          ContentType: mime.lookup(filePath)
+        };
 
-      // TODO: remove browser caching
-      return this.aws.request('S3', 'putObject', params, this.stage, this.region);
+        if (this.gzip) {
+          params.ContentEncoding = 'gzip';
+        }
+
+        // TODO: remove browser caching
+        return this.aws.request('S3', 'putObject', params, this.stage, this.region);
+      });
     });
+  }
 
+  _gzipFile(filePath, filename, done) {
+    if (!this.gzip) {
+      done();
+      return;
+    }
+
+    this.serverless.cli.log(`Compressing file '${filename}'`);
+
+    const content = fs.readFileSync(filePath);
+    zlib.gzip(content, (error, result) => {
+      if (error) {
+        this.serverless.cli.log(`Fail to compress file '${filename}'`, error);
+        done();
+        return;
+      }
+
+      fs.writeFileSync(filePath, result);
+      done();
+    });
   }
 
   _setWebpackFilename() {
@@ -421,7 +451,7 @@ class SPA {
   _setBucketName() {
     this.bucketName = _.get(this.serverless, 'service.custom.spa.bucket');
 
-    if (!this.bucketName || typeof (this.webpackFilename) !== 'string') {
+    if (!this.bucketName || typeof (this.bucketName) !== 'string') {
       this.bucketName = _.get(this.serverless, `service.custom.spa.bucket.${this.stage}`);
     }
 
@@ -461,6 +491,10 @@ class SPA {
 
   _setDistFolder() {
     this.distFolder = path.join(process.cwd(), '.spa');
+  }
+
+  _setGZip() {
+    this.gzip = _.get(this.serverless, 'service.custom.spa.gzip');
   }
 }
 

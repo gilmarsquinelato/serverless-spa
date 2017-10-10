@@ -13,6 +13,7 @@ custom:
   webpackIncludeModules: true
   spa:
     appFolder: "www"
+    gzip: true
     webpack:
       dev: "webpack.spa.dev.config.js"
     bucket:
