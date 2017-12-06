@@ -375,9 +375,11 @@ class SPA {
     return this.aws.request('S3', 'putBucketPolicy', params, this.stage, this.region);
   }
 
-  _uploadDirectory() {
-    const directoryPath = this.distFolder;
-    this.serverless.cli.log('Uploading files...');
+  _uploadDirectory(recursivePath) {
+    let directoryPath = this.distFolder;
+    if (JSON.stringify(recursivePath) !== "{}") {
+        directoryPath = recursivePath
+    }
     let readDirectory = _.partial(fs.readdir, directoryPath);
 
     async.waterfall([readDirectory, (files) => {

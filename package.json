@@ -1,6 +1,6 @@
 {
-  "name": "serverless-spa",
-  "version": "1.2.0",
+  "name": "serverless-spa-fix",
+  "version": "1.2.1",
   "description": "Serverless plugin to bundle website with webpack and deploy to S3",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gilmarsquinelato/serverless-spa.git"
+    "url": "git+https://github.com/danielbardsley/serverless-spa.git"
   },
   "keywords":  [
     "serverless",
@@ -22,12 +22,12 @@
     "spa",
     "offline"
   ],
-  "author": "Gilmar Quinelato <gilmarsquinelato@gmail.com>",
+  "author": "Daniel Bardsley <daniel@bardsley.org.uk",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gilmarsquinelato/serverless-spa/issues"
+    "url": "https://github.com/danielbardsley/serverless-spa/issues"
   },
-  "homepage": "https://github.com/gilmarsquinelato/serverless-spa#readme",
+  "homepage": "https://github.com/danielbardsley/serverless-spa#readme",
   "dependencies": {
     "async": "^2.5.0",
     "bluebird": "^3.5.0",
