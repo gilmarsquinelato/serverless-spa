@@ -476,7 +476,7 @@ class SPA {
     this.webpackConfig.output = {
       path: path.join(process.cwd(), '.spa'),
       filename: '[name].js',
-      publicPath: '/'
+      publicPath: this.webpackConfig.output.publicPath ? this.webpackConfig.output.publicPath : '/'
     };
   }
 
