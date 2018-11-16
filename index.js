@@ -473,11 +473,9 @@ class SPA {
     process.env.SERVERLESS_STAGE = this.stage;
     this.webpackConfig = require(this.webpackConfigPath);
 
-    this.webpackConfig.output = {
-      path: path.join(process.cwd(), '.spa'),
-      filename: '[name].js',
-      publicPath: this.webpackConfig.output.publicPath ? this.webpackConfig.output.publicPath : '/'
-    };
+    this.webpackConfig.output = this.webpackConfig.output || {};
+    this.webpackConfig.output.path = path.join(process.cwd(), '.spa');
+    this.webpackConfig.output.publicPath = this.webpackConfig.output.publicPath || '/';
   }
 
   _setAppFolder() {
