@@ -376,6 +376,7 @@ class SPA {
   }
 
   _uploadDirectory(recursivePath) {
+    this.serverless.cli.log('Uploading files...');
     let directoryPath = this.distFolder;
     if (JSON.stringify(recursivePath) !== "{}") {
         directoryPath = recursivePath
