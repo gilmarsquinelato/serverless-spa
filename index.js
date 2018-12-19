@@ -381,12 +381,12 @@ class SPA {
     if (JSON.stringify(recursivePath) !== "{}") {
         directoryPath = recursivePath
     }
-    let files = fs.readdirSync(directoryPath)
+    let files = fs.readdirSync(directoryPath);
 
     files = _.map(files, (file) => path.join(directoryPath, file));
 
     return Promise.all(_.chain(files).map((path) => {
-      let stats = fs.statSync(path)
+      let stats = fs.statSync(path);
       return stats.isDirectory() ? this._uploadDirectory(path) : this._uploadFile(path);
     }).flattenDeep().value());
   }
@@ -397,7 +397,7 @@ class SPA {
     return this._gzipFile(filePath, fileKey, () => {
       this.serverless.cli.log(`Uploading file '${fileKey}'...`);
 
-      const fileBuffer = fs.readFileSync(filePath)
+      const fileBuffer = fs.readFileSync(filePath);
       let params = {
         Bucket: this.bucketName,
         Key: fileKey,
@@ -423,7 +423,7 @@ class SPA {
 
     const content = fs.readFileSync(filePath);
     try{
-      const result = zlib.gzipSync(content)
+      const result = zlib.gzipSync(content);
       fs.writeFileSync(filePath, result);
       return done();
     }catch(error){
