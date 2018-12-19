@@ -423,16 +423,16 @@ class SPA {
     this.serverless.cli.log(`Compressing file '${filename}'`);
 
     const content = fs.readFileSync(filePath);
-    zlib.gzip(content, (error, result) => {
-      if (error) {
-        this.serverless.cli.log(`Fail to compress file '${filename}'`, error);
-        done();
-        return;
-      }
-
+    try{
+      const result = zlib.gzipSync(content)
       fs.writeFileSync(filePath, result);
       done();
-    });
+      return;
+    }catch(error){
+      this.serverless.cli.log(`Fail to compress file '${filename}'`, error);
+      done();
+      return;
+    }
   }
 
   _setWebpackFilename() {
