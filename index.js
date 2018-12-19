@@ -381,17 +381,14 @@ class SPA {
     if (JSON.stringify(recursivePath) !== "{}") {
         directoryPath = recursivePath
     }
-    let readDirectory = _.partial(fs.readdir, directoryPath);
+    let files = fs.readdirSync(directoryPath)
 
-    async.waterfall([readDirectory, (files) => {
-      files = _.map(files, (file) => path.join(directoryPath, file));
+    files = _.map(files, (file) => path.join(directoryPath, file));
 
-      async.each(files, (path) => {
-        fs.stat(path, (err, stats) => {
-          return stats.isDirectory() ? this._uploadDirectory(path) : this._uploadFile(path);
-        });
-      });
-    }]);
+    return async.each(files, (path) => {
+      let stats = fs.statSync(path)
+      return stats.isDirectory() ? this._uploadDirectory(path) : this._uploadFile(path);
+    });
   }
 
   _uploadFile(filePath) {
@@ -400,21 +397,20 @@ class SPA {
     this._gzipFile(filePath, fileKey, () => {
       this.serverless.cli.log(`Uploading file '${fileKey}'...`);
 
-      fs.readFile(filePath, (err, fileBuffer) => {
-        let params = {
-          Bucket: this.bucketName,
-          Key: fileKey,
-          Body: fileBuffer,
-          ContentType: mime.lookup(filePath)
-        };
+      const fileBuffer = fs.readFileSync(filePath)
+      let params = {
+        Bucket: this.bucketName,
+        Key: fileKey,
+        Body: fileBuffer,
+        ContentType: mime.lookup(filePath)
+      };
 
-        if (this.gzip) {
-          params.ContentEncoding = 'gzip';
-        }
+      if (this.gzip) {
+        params.ContentEncoding = 'gzip';
+      }
 
-        // TODO: remove browser caching
-        return this.aws.request('S3', 'putObject', params, this.stage, this.region);
-      });
+      // TODO: remove browser caching
+      return this.aws.request('S3', 'putObject', params, this.stage, this.region);
     });
   }
 
