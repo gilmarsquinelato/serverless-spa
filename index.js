@@ -381,62 +381,55 @@ class SPA {
     if (JSON.stringify(recursivePath) !== "{}") {
         directoryPath = recursivePath
     }
-    let readDirectory = _.partial(fs.readdir, directoryPath);
+    let files = fs.readdirSync(directoryPath);
 
-    async.waterfall([readDirectory, (files) => {
-      files = _.map(files, (file) => path.join(directoryPath, file));
+    files = _.map(files, (file) => path.join(directoryPath, file));
 
-      async.each(files, (path) => {
-        fs.stat(path, (err, stats) => {
-          return stats.isDirectory() ? this._uploadDirectory(path) : this._uploadFile(path);
-        });
-      });
-    }]);
+    return Promise.all(_.chain(files).map((path) => {
+      let stats = fs.statSync(path);
+      return stats.isDirectory() ? this._uploadDirectory(path) : this._uploadFile(path);
+    }).flattenDeep().value());
   }
 
   _uploadFile(filePath) {
     let fileKey = filePath.replace(this.distFolder, '').substr(1).replace(/\\/g, '/');
 
-    this._gzipFile(filePath, fileKey, () => {
+    return this._gzipFile(filePath, fileKey, () => {
       this.serverless.cli.log(`Uploading file '${fileKey}'...`);
 
-      fs.readFile(filePath, (err, fileBuffer) => {
-        let params = {
-          Bucket: this.bucketName,
-          Key: fileKey,
-          Body: fileBuffer,
-          ContentType: mime.lookup(filePath)
-        };
+      const fileBuffer = fs.readFileSync(filePath);
+      let params = {
+        Bucket: this.bucketName,
+        Key: fileKey,
+        Body: fileBuffer,
+        ContentType: mime.lookup(filePath)
+      };
 
-        if (this.gzip) {
-          params.ContentEncoding = 'gzip';
-        }
+      if (this.gzip) {
+        params.ContentEncoding = 'gzip';
+      }
 
-        // TODO: remove browser caching
-        return this.aws.request('S3', 'putObject', params, this.stage, this.region);
-      });
+      // TODO: remove browser caching
+      return this.aws.request('S3', 'putObject', params, this.stage, this.region);
     });
   }
 
   _gzipFile(filePath, filename, done) {
     if (!this.gzip) {
-      done();
-      return;
+      return done();
     }
 
     this.serverless.cli.log(`Compressing file '${filename}'`);
 
     const content = fs.readFileSync(filePath);
-    zlib.gzip(content, (error, result) => {
-      if (error) {
-        this.serverless.cli.log(`Fail to compress file '${filename}'`, error);
-        done();
-        return;
-      }
-
+    try{
+      const result = zlib.gzipSync(content);
       fs.writeFileSync(filePath, result);
-      done();
-    });
+      return done();
+    }catch(error){
+      this.serverless.cli.log(`Fail to compress file '${filename}'`, error);
+      return done();
+    }
   }
 
   _setWebpackFilename() {
