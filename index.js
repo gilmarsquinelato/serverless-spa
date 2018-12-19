@@ -4,7 +4,6 @@ const zlib = require('zlib');
 const fse = require('fs-extra');
 const BbPromise = require('bluebird');
 const _ = require('lodash');
-const async = require('async');
 const mime = require('mime-types');
 const fs = require('fs');
 const webpack = require('webpack');
@@ -17,8 +16,7 @@ class SPA {
     this.options = options;
     this.stage = options.stage || _.get(serverless, 'service.provider.stage')
     this.region = options.region || _.get(serverless, 'service.provider.region');
-    this.provider = 'aws';
-    this.aws = this.serverless.getProvider(this.provider);
+    this.provider = this.serverless.getProvider('aws');
 
     this.commands = {
       spa: {
@@ -104,9 +102,6 @@ class SPA {
   }
 
   prepare() {
-    const Utils = this.serverless.utils;
-    const Error = this.serverless.classes.Error;
-
     let error = this._setWebpackFilename();
     if (error) {
       return error;
@@ -197,8 +192,6 @@ class SPA {
   }
 
   serve() {
-    const Error = this.serverless.classes.Error;
-
     const devServerOptions = _.extend(
       {
         port: 8080
@@ -270,7 +263,7 @@ class SPA {
   }
 
   deploy() {
-    return this.aws.request('S3', 'listBuckets', {}, this.stage, this.region)
+    return this.provider.request('S3', 'listBuckets', {}, this.stage, this.region)
       .bind(this)
       .then(this._listBuckets)
       .then(this._listObjectsInBucket)
@@ -299,7 +292,7 @@ class SPA {
       Bucket: this.bucketName
     };
 
-    return this.aws.request('S3', 'listObjectsV2', params, this.stage, this.region);
+    return this.provider.request('S3', 'listObjectsV2', params, this.stage, this.region);
   }
 
   _deleteObjectsFromBucket(data) {
@@ -320,7 +313,7 @@ class SPA {
       Delete: { Objects: Objects }
     };
 
-    return this.aws.request('S3', 'deleteObjects', params, this.stage, this.region);
+    return this.provider.request('S3', 'deleteObjects', params, this.stage, this.region);
   }
 
   _createBucket() {
@@ -331,7 +324,7 @@ class SPA {
       Bucket: this.bucketName
     };
 
-    return this.aws.request('S3', 'createBucket', params, this.stage, this.region);
+    return this.provider.request('S3', 'createBucket', params, this.stage, this.region);
   }
 
   _configureBucket() {
@@ -345,7 +338,7 @@ class SPA {
       }
     };
 
-    return this.aws.request('S3', 'putBucketWebsite', params, this.stage, this.region)
+    return this.provider.request('S3', 'putBucketWebsite', params, this.stage, this.region)
   }
 
   _configurePolicyForBucket() {
@@ -372,7 +365,7 @@ class SPA {
       Policy: JSON.stringify(policy)
     };
 
-    return this.aws.request('S3', 'putBucketPolicy', params, this.stage, this.region);
+    return this.provider.request('S3', 'putBucketPolicy', params, this.stage, this.region);
   }
 
   _uploadDirectory(recursivePath) {
@@ -410,7 +403,7 @@ class SPA {
       }
 
       // TODO: remove browser caching
-      return this.aws.request('S3', 'putObject', params, this.stage, this.region);
+      return this.provider.request('S3', 'putObject', params, this.stage, this.region);
     });
   }
 
