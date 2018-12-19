@@ -394,7 +394,7 @@ class SPA {
   _uploadFile(filePath) {
     let fileKey = filePath.replace(this.distFolder, '').substr(1).replace(/\\/g, '/');
 
-    this._gzipFile(filePath, fileKey, () => {
+    return this._gzipFile(filePath, fileKey, () => {
       this.serverless.cli.log(`Uploading file '${fileKey}'...`);
 
       const fileBuffer = fs.readFileSync(filePath)
