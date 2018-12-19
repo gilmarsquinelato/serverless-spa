@@ -385,10 +385,10 @@ class SPA {
 
     files = _.map(files, (file) => path.join(directoryPath, file));
 
-    return _.chain(files).map(files, (path) => {
+    return Promise.all(_.chain(files).map((path) => {
       let stats = fs.statSync(path)
       return stats.isDirectory() ? this._uploadDirectory(path) : this._uploadFile(path);
-    }).flattenDeep().value();
+    }).flattenDeep().value());
   }
 
   _uploadFile(filePath) {
