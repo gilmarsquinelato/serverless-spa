@@ -385,10 +385,10 @@ class SPA {
 
     files = _.map(files, (file) => path.join(directoryPath, file));
 
-    return async.each(files, (path) => {
+    return _.chain(files).map(files, (path) => {
       let stats = fs.statSync(path)
       return stats.isDirectory() ? this._uploadDirectory(path) : this._uploadFile(path);
-    });
+    }).flattenDeep().value();
   }
 
   _uploadFile(filePath) {
@@ -416,8 +416,7 @@ class SPA {
 
   _gzipFile(filePath, filename, done) {
     if (!this.gzip) {
-      done();
-      return;
+      return done();
     }
 
     this.serverless.cli.log(`Compressing file '${filename}'`);
@@ -426,12 +425,10 @@ class SPA {
     try{
       const result = zlib.gzipSync(content)
       fs.writeFileSync(filePath, result);
-      done();
-      return;
+      return done();
     }catch(error){
       this.serverless.cli.log(`Fail to compress file '${filename}'`, error);
-      done();
-      return;
+      return done();
     }
   }
 
