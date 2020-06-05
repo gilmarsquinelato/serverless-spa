@@ -1,9 +1,11 @@
-# Serverless SPA
+# [DEPRECATED] Serverless SPA
 
 [![Serverless][ico-serverless]][link-serverless]
 [![License][ico-license]][link-license]
 [![NPM][ico-npm]][link-npm]
 [![Contributors][ico-contributors]][link-contributors]
+
+`Since this project don't get enough visibility, doesn't worth it the effort`
 
 A Serverless v1.x plugin to deploy your website to AWS S3 using [Webpack][link-webpack] to bundle it.
 
